@@ -29,6 +29,7 @@ dependencies:
     git:
       url: git@github.com:juniorise/flutter_tflite.git
       ref: master
+  image: ^3.2.2
 
 dev_dependencies:
   flutter_test:

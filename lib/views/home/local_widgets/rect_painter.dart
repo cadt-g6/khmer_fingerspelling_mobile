@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 
+@Deprecated("Draw with Stack / Container instead for clickable")
 class RectPainter extends CustomPainter {
   final PredictedPosition position;
   final BoxConstraints constraints;
@@ -16,19 +17,18 @@ class RectPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double imageWidth = constraints.maxWidth;
-    double imageHeight = constraints.maxWidth;
+    double imageSize = constraints.maxWidth;
 
     double x = position.x;
     double y = position.y;
     double w = position.w;
     double h = position.h;
 
-    x = x * imageWidth / imageAspectRatio.height;
-    w = w * imageWidth / imageAspectRatio.height;
+    x = x * imageSize / imageAspectRatio.height;
+    w = w * imageSize / imageAspectRatio.height;
 
-    y = y * imageHeight / imageAspectRatio.width;
-    h = h * imageHeight / imageAspectRatio.width;
+    y = y * imageSize / imageAspectRatio.width;
+    h = h * imageSize / imageAspectRatio.width;
 
     double xw = x + w;
     double yh = y + h;

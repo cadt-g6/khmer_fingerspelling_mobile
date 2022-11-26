@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/empty_widget.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/home_app_bar.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/image_selector.dart';
-import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/rect_painter.dart';
 
 class HomeMobile extends StatelessWidget {
   const HomeMobile({
@@ -16,8 +16,6 @@ class HomeMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = viewModel.currentImage;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -25,7 +23,7 @@ class HomeMobile extends StatelessWidget {
       body: Stack(
         children: [
           EmptyWidget(onPressed: () => viewModel.showImageSelector.value = !viewModel.showImageSelector.value),
-          if (image != null) buildBody(image),
+          if (viewModel.currentImage != null) buildBody(viewModel.currentImage!),
           buildImageSelector(),
         ],
       ),
@@ -42,18 +40,69 @@ class HomeMobile extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.fitWidth,
             ),
-            for (int i = 0; i < viewModel.predictedPositions.length; i++)
-              CustomPaint(
-                foregroundPainter: RectPainter(
-                  viewModel.predictedPositions[i],
-                  viewModel.currentImageAspectRatio!,
-                  constraints,
-                  generateColor(i),
-                ),
-              ),
+            for (int index = 0; index < viewModel.predictedPositions.length; index++)
+              buildRect(
+                context,
+                index,
+                viewModel.predictedPositions[index],
+                constraints,
+              )
           ],
         );
       }),
+    );
+  }
+
+  Widget buildRect(
+    BuildContext context,
+    int index,
+    PredictedPosition position,
+    BoxConstraints constraints,
+  ) {
+    double imageSize = constraints.maxWidth;
+
+    double x = position.x;
+    double y = position.y;
+    double w = position.w;
+    double h = position.h;
+
+    x = x * imageSize / viewModel.currentImageAspectRatio!.height;
+    w = w * imageSize / viewModel.currentImageAspectRatio!.height;
+
+    y = y * imageSize / viewModel.currentImageAspectRatio!.width;
+    h = h * imageSize / viewModel.currentImageAspectRatio!.width;
+
+    double xw = x + w;
+    double yh = y + h;
+
+    PredictedPosition relativePosition = PredictedPosition(x, y, w, h);
+    return Positioned.fromRect(
+      rect: Rect.fromPoints(
+        Offset(x, yh),
+        Offset(xw, y),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () async => viewModel.showPredictInfo(context, position, relativePosition),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 2,
+                color: [
+                  Colors.red,
+                  Colors.blue,
+                  Colors.green,
+                  Colors.orange,
+                  Colors.purple,
+                  Colors.brown,
+                  Colors.cyan,
+                ][(index + 1) % 7],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -76,17 +125,5 @@ class HomeMobile extends StatelessWidget {
       preferredSize: const Size.fromHeight(kToolbarHeight),
       child: HomeAppBar(viewModel: viewModel),
     );
-  }
-
-  Color generateColor(int i) {
-    return [
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.purple,
-      Colors.brown,
-      Colors.cyan,
-    ][(i + 1) % 7];
   }
 }

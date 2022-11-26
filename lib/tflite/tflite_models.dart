@@ -60,10 +60,10 @@ class TfliteModels {
         }
       }).map((detector) {
         return PredictedPosition(
-          y: detector['rect']['y'],
-          w: detector['rect']['w'],
-          x: detector['rect']['x'],
-          h: detector['rect']['h'],
+          detector['rect']['x'],
+          detector['rect']['y'],
+          detector['rect']['w'],
+          detector['rect']['h'],
         );
       }).toList();
     } catch (e) {

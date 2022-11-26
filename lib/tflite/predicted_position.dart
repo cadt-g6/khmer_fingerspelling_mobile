@@ -4,10 +4,18 @@ class PredictedPosition {
   final double w;
   final double h;
 
-  PredictedPosition({
-    required this.x,
-    required this.y,
-    required this.w,
-    required this.h,
-  });
+  PredictedPosition(this.x, this.y, this.w, this.h);
+  factory PredictedPosition.withParams({
+    required double x,
+    required double y,
+    required double w,
+    required double h,
+  }) {
+    return PredictedPosition(x, y, w, h);
+  }
+
+  @override
+  String toString() {
+    return "x: $x, y: $y, w: $w, h: $h";
+  }
 }

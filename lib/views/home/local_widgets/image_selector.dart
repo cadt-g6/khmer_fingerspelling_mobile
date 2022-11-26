@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class ImageSelector extends StatefulWidget {
   });
 
   final ValueNotifier<bool> showImageSelector;
-  final void Function(File image, Size imageAspectRatio) onImageSelected;
+  final void Function(File image, Size imageSize) onImageSelected;
 
   // ignore: library_private_types_in_public_api
   // _ImageSelectorState? of(BuildContext context) {
@@ -32,7 +31,7 @@ class ImageSelector extends StatefulWidget {
 
 class _ImageSelectorState extends State<ImageSelector> {
   Set<String> imagePaths = {};
-  Map<String, Size> imagesAspectRatios = {};
+  Map<String, Size> imageSize = {};
 
   Future<void> addImage() async {
     String? key = await showModalActionSheet<String>(
@@ -66,8 +65,9 @@ class _ImageSelectorState extends State<ImageSelector> {
           hintText: "Image url",
           keyboardType: TextInputType.url,
           initialText:
-              "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
-          // "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
+              // "https://user-images.githubusercontent.com/29684683/204102649-185c05a5-98f5-457e-9fa1-cc08ad4c3168.png",
+              // "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
+              "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
           validator: (value) {
             if (value == null || value.trim().isEmpty) return "Must not null";
             if (Uri.tryParse(value.trim()) == null) return "Must be an url";
@@ -246,7 +246,7 @@ class _ImageSelectorState extends State<ImageSelector> {
                             final filePath = imagePaths.elementAt(index);
                             widget.onImageSelected(
                               File(filePath),
-                              imagesAspectRatios[filePath]!,
+                              imageSize[filePath]!,
                             );
                           },
                         ),
@@ -274,11 +274,7 @@ class _ImageSelectorState extends State<ImageSelector> {
           (imageInfo, _) {
             int width = imageInfo.image.width;
             int height = imageInfo.image.height;
-
-            imagesAspectRatios[file.path] = Size(
-              width / min(width, height),
-              height / min(width, height),
-            );
+            imageSize[file.path] = Size(width.toDouble(), height.toDouble());
           },
         ),
       );
