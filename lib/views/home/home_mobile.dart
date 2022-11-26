@@ -12,8 +12,11 @@ class HomeMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
-        title: const Text("Khmer Fingerspelling"),
+        backgroundColor: Theme.of(context).colorScheme.background,
+        elevation: 0.0,
         actions: [
           IconButton(
             icon: const Icon(Icons.light),
@@ -21,7 +24,31 @@ class HomeMobile extends StatelessWidget {
               context.read<ThemeProvider>().toggleThemeMode();
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
         ],
+      ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.add_a_photo_outlined,
+              size: 64,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text("បញ្ចូលរូបភាព"),
+            )
+          ],
+        ),
       ),
     );
   }

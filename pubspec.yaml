@@ -36,15 +36,22 @@ flutter:
   # https://flutter.dev/assets-and-images/#resolution-aware
   # https://flutter.dev/assets-and-images/#from-packages
 
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: KantumruyPro
+      fonts:
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Thin.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-ExtraLight.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Light.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Regular.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Medium.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-SemiBold.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Bold.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-ThinItalic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-ExtraLightItalic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-LightItalic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-Italic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-MediumItalic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-SemiBoldItalic.ttf
+        - asset: assets/fonts/KantumruyPro/KantumruyPro-BoldItalic.ttf
+
   # see https://flutter.dev/custom-fonts/#from-packages
