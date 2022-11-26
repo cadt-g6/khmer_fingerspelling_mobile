@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:khmer_fingerspelling_flutter/core/services/messenger_service.dart';
 import 'package:khmer_fingerspelling_flutter/core/utils/file_helper.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 
@@ -20,6 +22,11 @@ class ImageUtils {
       'imageSize': imageSize,
       'position': position,
     });
+
+    if (cropBytes == null) {
+      MessengerService.instance.showSnackBar("Crop image failed!");
+      return null;
+    }
 
     File croppedFile = await FileHelper.helper.writeToFile(
       filename,
@@ -47,8 +54,14 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
     h: position.h * imageSize.height,
   );
 
-  double add = 200;
+  double add = 2000;
   if (add > 0) {
+    // in case excede size,
+    // by default, img.copyCrop already handle this but not in sqaue size.
+    double excedeWidth = (cropPosition.w + add) - imageSize.width;
+    double excedeHeight = (cropPosition.h + add) - imageSize.height;
+    add = add - max(0, max(excedeWidth, excedeHeight));
+
     cropPosition = PredictedPosition.withParams(
       x: cropPosition.x - add / 2,
       y: cropPosition.y - add / 2,
@@ -65,6 +78,7 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
     cropPosition.h.toInt(),
   );
 
-  List<int> cropBytes = img.encodeNamedImage(cropped, basename(imageFile.path))!;
+  String filename = basename(imageFile.path);
+  List<int>? cropBytes = img.encodeNamedImage(cropped, filename);
   return cropBytes;
 }
