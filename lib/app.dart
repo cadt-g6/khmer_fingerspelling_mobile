@@ -7,10 +7,13 @@ import 'package:provider/provider.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(debugLabel: "App");
+
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
+      navigatorKey: navigatorKey,
       themeMode: themeProvider.themeMode,
       theme: ThemeConfig.config.lightTheme(context),
       darkTheme: ThemeConfig.config.darkTheme(context),
