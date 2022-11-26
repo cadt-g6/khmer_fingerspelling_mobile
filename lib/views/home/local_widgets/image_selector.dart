@@ -34,6 +34,9 @@ class _ImageSelectorState extends State<ImageSelector> {
   Map<String, Size> imageSize = {};
 
   Future<void> addImage() async {
+    getImageFromInput();
+    return;
+
     String? key = await showModalActionSheet<String>(
       context: context,
       actions: [
@@ -58,7 +61,7 @@ class _ImageSelectorState extends State<ImageSelector> {
   Future<void> getImageFromInput() async {
     showTextInputDialog(
       context: context,
-      title: "Image url",
+      title: "Insert image url",
       autoSubmit: true,
       textFields: [
         DialogTextField(
