@@ -66,7 +66,8 @@ class _ImageSelectorState extends State<ImageSelector> {
           hintText: "Image url",
           keyboardType: TextInputType.url,
           initialText:
-              "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
+              "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
+          // "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
           validator: (value) {
             if (value == null || value.trim().isEmpty) return "Must not null";
             if (Uri.tryParse(value.trim()) == null) return "Must be an url";
@@ -177,7 +178,9 @@ class _ImageSelectorState extends State<ImageSelector> {
                   firstChild: TextButton.icon(
                     icon: const Icon(Icons.image_search),
                     label: const Text("Predict"),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<HomeViewModel>().predict();
+                    },
                   ),
                 ),
                 KfCrossFade(

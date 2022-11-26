@@ -47,6 +47,7 @@ class FileHelper {
   Future<List<File>> listAllImages() async {
     temporaryDirectory ??= await getTemporaryDirectory();
     final parentPath = Directory('${temporaryDirectory!.path}/images');
+    if (!await parentPath.exists()) await parentPath.create(recursive: true);
     final result = parentPath.listSync(recursive: true);
     return result.whereType<File>().toList();
   }
