@@ -1,4 +1,4 @@
-package com.example.khmer_fingerspelling_flutter
+package com.juniorise.khmer.fingerspelling
 
 import io.flutter.embedding.android.FlutterActivity
 

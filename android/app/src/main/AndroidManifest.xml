@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.khmer_fingerspelling_flutter">
+    package="com.juniorise.khmer.fingerspelling">
    <application
-        android:label="khmer_fingerspelling_flutter"
+        android:label="Khmer Fingerspelling"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
