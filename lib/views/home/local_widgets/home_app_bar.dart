@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/providers/theme_provider.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
+import 'package:khmer_fingerspelling_flutter/widgets/kf_animated_icon.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_pop_up_menu_button.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,28 @@ class HomeAppBar extends StatelessWidget {
       systemOverlayStyle:
           Theme.of(context).brightness == Brightness.light ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
       elevation: 0.0,
+      leading: Center(
+        child: IconButton(
+          icon: ValueListenableBuilder<bool>(
+            valueListenable: viewModel.drawerOpenedNotifier,
+            builder: (context, opened, child) {
+              return KfAnimatedIcons(
+                showFirst: opened,
+                duration: ConfigConstant.duration,
+                secondChild: const Icon(Icons.menu),
+                firstChild: const Icon(Icons.clear),
+              );
+            },
+          ),
+          onPressed: () {
+            if (Scaffold.of(context).isDrawerOpen) {
+              Scaffold.of(context).closeDrawer();
+            } else {
+              Scaffold.of(context).openDrawer();
+            }
+          },
+        ),
+      ),
       actions: [
         Center(
           child: IconButton(

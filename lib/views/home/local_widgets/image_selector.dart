@@ -34,9 +34,6 @@ class _ImageSelectorState extends State<ImageSelector> {
   Map<String, Size> imageSize = {};
 
   Future<void> addImage() async {
-    getImageFromInput();
-    return;
-
     String? key = await showModalActionSheet<String>(
       context: context,
       actions: [
@@ -67,10 +64,10 @@ class _ImageSelectorState extends State<ImageSelector> {
         DialogTextField(
           hintText: "Image url",
           keyboardType: TextInputType.url,
-          initialText:
-              // "https://user-images.githubusercontent.com/29684683/204102649-185c05a5-98f5-457e-9fa1-cc08ad4c3168.png",
-              // "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
-              "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
+          initialText: "https://miro.medium.com/max/1400/0*CvYL8OI0js7MWUlM",
+          // "https://user-images.githubusercontent.com/29684683/204102649-185c05a5-98f5-457e-9fa1-cc08ad4c3168.png",
+          // "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
+          // "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
           validator: (value) {
             if (value == null || value.trim().isEmpty) return "Must not null";
             if (Uri.tryParse(value.trim()) == null) return "Must be an url";
@@ -173,19 +170,20 @@ class _ImageSelectorState extends State<ImageSelector> {
             ),
             Row(
               children: [
-                KfCrossFade(
-                  showFirst: context.read<HomeViewModel>().currentImage != null,
-                  secondChild: const SizedBox(height: 48.0),
-                  duration: ConfigConstant.duration,
-                  alignment: Alignment.centerLeft,
-                  firstChild: TextButton.icon(
-                    icon: const Icon(Icons.image_search),
-                    label: const Text("Predict"),
-                    onPressed: () {
-                      context.read<HomeViewModel>().predict();
-                    },
-                  ),
-                ),
+                // KfCrossFade(
+                //   showFirst: context.read<HomeViewModel>().currentImage != null &&
+                //       context.read<HomeViewModel>().predictedPositions.isEmpty == true,
+                //   secondChild: const SizedBox(height: 48.0),
+                //   duration: ConfigConstant.duration,
+                //   alignment: Alignment.centerLeft,
+                //   firstChild: TextButton.icon(
+                //     icon: const Icon(Icons.image_search),
+                //     label: const Text("Predict"),
+                //     onPressed: () {
+                //       context.read<HomeViewModel>().predict();
+                //     },
+                //   ),
+                // ),
                 KfCrossFade(
                   showFirst: context.read<HomeViewModel>().currentImage != null,
                   secondChild: const SizedBox(height: 48.0),

@@ -13,9 +13,12 @@ import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predicted_
 
 class HomeViewModel extends BaseViewModel {
   late final ValueNotifier<bool> showImageSelector;
+  late final ValueNotifier<bool> drawerOpenedNotifier;
+  late final ValueNotifier<int?> selectedPredictionIndexNotifier;
 
-  File? get currentImage => _currentImage;
+  List<PredictedPosition> get predictedPositions => _predictedPositions;
   Size? get currentImageSize => _currentImageSize;
+  File? get currentImage => _currentImage;
   Size? get currentImageAspectRatio {
     if (currentImageSize == null) return null;
     return Size(
@@ -24,20 +27,22 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  List<PredictedPosition> get predictedPositions => _predictedPositions;
-
   File? _currentImage;
   Size? _currentImageSize;
   List<PredictedPosition> _predictedPositions = [];
 
   HomeViewModel() {
     showImageSelector = ValueNotifier(false);
+    drawerOpenedNotifier = ValueNotifier(false);
+    selectedPredictionIndexNotifier = ValueNotifier(null);
     TfliteModels.handTrackingModel.load();
   }
 
   @override
   void dispose() {
     showImageSelector.dispose();
+    drawerOpenedNotifier.dispose();
+    selectedPredictionIndexNotifier.dispose();
     TfliteModels.handTrackingModel.close();
     super.dispose();
   }
@@ -55,6 +60,7 @@ class HomeViewModel extends BaseViewModel {
 
     List<PredictedPosition>? result = await TfliteModels.handTrackingModel.filePredict(_currentImage!);
     _predictedPositions = result ?? [];
+    selectedPredictionIndexNotifier.value = 0;
     notifyListeners();
   }
 
