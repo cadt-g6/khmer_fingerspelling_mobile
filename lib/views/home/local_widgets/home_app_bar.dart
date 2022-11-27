@@ -45,14 +45,14 @@ class HomeAppBar extends StatelessWidget {
         ),
       ),
       actions: [
-        Center(
-          child: IconButton(
-            icon: Icon(Icons.folder_shared, color: Theme.of(context).colorScheme.primary),
-            onPressed: () {
-              viewModel.showImageSelector.value = !viewModel.showImageSelector.value;
-            },
-          ),
-        ),
+        // Center(
+        //   child: IconButton(
+        //     icon: Icon(Icons.folder_shared, color: Theme.of(context).colorScheme.primary),
+        //     onPressed: () {
+        //       viewModel.showImageSelector.value = !viewModel.showImageSelector.value;
+        //     },
+        //   ),
+        // ),
         Center(
           child: IconButton(
             icon: Icon(Theme.of(context).brightness == Brightness.dark ? Icons.dark_mode : Icons.light_mode),

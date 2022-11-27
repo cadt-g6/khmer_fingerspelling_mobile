@@ -96,7 +96,7 @@ class _DetectorRectSelected extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: InkWell(
             borderRadius: BorderRadius.circular(8.0),
-            onTap: () => onTap,
+            onTap: onTap,
             child: CustomPaint(
               foregroundPainter: BorderPainter(),
               child: Container(

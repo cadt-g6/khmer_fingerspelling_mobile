@@ -54,7 +54,7 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
     h: position.h * imageSize.height,
   );
 
-  double add = 200;
+  double add = 150;
   if (add > 0) {
     // in case excede size,
     // by default, img.copyCrop already handle this but not in sqaue size.

@@ -6,6 +6,7 @@ import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/detector_r
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/empty_widget.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/home_app_bar.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/image_selector.dart';
+import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predictation_tile.dart';
 
 class HomeMobile extends StatelessWidget {
   const HomeMobile({
@@ -15,10 +16,6 @@ class HomeMobile extends StatelessWidget {
 
   final HomeViewModel viewModel;
 
-  // onTap: () {
-  //   PredictedPosition relativePosition = PredictedPosition(x, y, w, h);
-  //   viewModel.showPredictInfo(context, position, relativePosition);
-  // },
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +29,7 @@ class HomeMobile extends StatelessWidget {
           EmptyWidget(onPressed: () => viewModel.showImageSelector.value = !viewModel.showImageSelector.value),
           if (viewModel.currentImage != null) buildBody(viewModel.currentImage!),
           buildImageSelector(),
+          PredictationTile(viewModel: viewModel),
         ],
       ),
     );

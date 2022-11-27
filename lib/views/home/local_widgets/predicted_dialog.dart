@@ -6,12 +6,10 @@ class PredictedDialog extends StatefulWidget {
   const PredictedDialog({
     super.key,
     required this.position,
-    required this.relativePosition,
     required this.image,
   });
 
   final PredictedPosition position;
-  final PredictedPosition relativePosition;
   final File image;
 
   @override
@@ -78,11 +76,11 @@ class _PredictedDialogState extends State<PredictedDialog> {
         [1, "Summary", "", ""],
         [0, "Character", "ក", ""],
         [0, "Confident", "0.6", ""],
-        [1, "Position", "Original", "* Screen size"],
-        [0, "X", widget.position.x, widget.relativePosition.x],
-        [0, "Y", widget.position.y, widget.relativePosition.y],
-        [0, "Width", widget.position.w, widget.relativePosition.w],
-        [0, "Height", widget.position.h, widget.relativePosition.h],
+        [1, "Position", "Original", ""],
+        [0, "X", widget.position.x],
+        [0, "Y", widget.position.y],
+        [0, "Width", widget.position.w],
+        [0, "Height", widget.position.h],
       ].map((e) {
         bool header = e[0] == 1;
         TextStyle? textStyle = header ? Theme.of(context).textTheme.labelSmall : Theme.of(context).textTheme.bodyMedium;
@@ -106,16 +104,6 @@ class _PredictedDialogState extends State<PredictedDialog> {
               alignment: Alignment.center,
               child: Text(
                 e[2].toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: Text(
-                e[3].toString(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: textStyle,
