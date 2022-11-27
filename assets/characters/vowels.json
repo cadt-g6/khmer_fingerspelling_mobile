@@ -1,0 +1,97 @@
+{
+  "type": "vowels",
+  "data": [
+    {
+      "khmer": "ា",
+      "latin": "srak_a"
+    },
+    {
+      "khmer": "ិ",
+      "latin": "srak_i"
+    },
+    {
+      "khmer": "ី",
+      "latin": "srak_ei"
+    },
+    {
+      "khmer": "ឹ",
+      "latin": "srak_oe"
+    },
+    {
+      "khmer": "ឺ",
+      "latin": "srak_eu"
+    },
+    {
+      "khmer": "ុ",
+      "latin": "srak_o"
+    },
+    {
+      "khmer": "ូ",
+      "latin": "srak_ou"
+    },
+    {
+      "khmer": "ួ",
+      "latin": "srak_uo"
+    },
+    {
+      "khmer": "ើ",
+      "latin": "srak_aeu"
+    },
+    {
+      "khmer": "ឿ",
+      "latin": "srak_oea"
+    },
+    {
+      "khmer": "ៀ",
+      "latin": "srak_ie"
+    },
+    {
+      "khmer": "េ",
+      "latin": "srak_e"
+    },
+    {
+      "khmer": "ែ",
+      "latin": "srak_ae"
+    },
+    {
+      "khmer": "ៃ",
+      "latin": "srak_ai"
+    },
+    {
+      "khmer": "ោ",
+      "latin": "srak_ao"
+    },
+    {
+      "khmer": "ៅ",
+      "latin": "srak_au"
+    },
+    {
+      "khmer": "ំ",
+      "latin": "srak_um"
+    },
+    {
+      "khmer": "ំុ",
+      "latin": "srak_om"
+    },
+    {
+      "khmer": "ាំ",
+      "latin": "srak_oam"
+    },
+    {
+      "khmer": "ះ",
+      "latin": "srak_ah"
+    },
+    {
+      "khmer": "ុះ",
+      "latin": "srak_oh"
+    },
+    {
+      "khmer": "េះ",
+      "latin": "srak_eh"
+    },
+    {
+      "khmer": "ោះ",
+      "latin": "srak_aoh"
+    }
+  ]
+}

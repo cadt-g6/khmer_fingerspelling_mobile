@@ -1,0 +1,61 @@
+{
+  "type": "sub_vowels",
+  "data": [
+    {
+      "khmer": "៊",
+      "latin": "treisapt"
+    },
+    {
+      "khmer": "៉",
+      "latin": "salap_pi"
+    },
+    {
+      "khmer": "៌",
+      "latin": "robat"
+    },
+    {
+      "khmer": "់",
+      "latin": "bantak"
+    },
+    {
+      "khmer": "័",
+      "latin": "samyouk_sanhnhea"
+    },
+    {
+      "khmer": "ៗ",
+      "latin": "lekh_tou"
+    },
+    {
+      "khmer": "៚",
+      "latin": "koumutr"
+    },
+    {
+      "khmer": "៖",
+      "latin": "chamnoch_pirkus"
+    },
+    {
+      "khmer": "។",
+      "latin": "khand"
+    },
+    {
+      "khmer": "៏",
+      "latin": "asda"
+    },
+    {
+      "khmer": "!",
+      "latin": "otean"
+    },
+    {
+      "khmer": "៍",
+      "latin": "tondokhead"
+    },
+    {
+      "khmer": "?",
+      "latin": "sanha_sur"
+    },
+    {
+      "khmer": "+",
+      "latin": "kakabat"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/providers/theme_provider.dart';
+import 'package:khmer_fingerspelling_flutter/views/characters/characters_view.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_animated_icon.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_pop_up_menu_button.dart';
@@ -68,7 +69,9 @@ class HomeAppBar extends StatelessWidget {
               return [
                 KfPopMenuItem(
                   title: "Dictionary",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const CharactersView()));
+                  },
                   trailingIconData: Icons.keyboard_arrow_right,
                 ),
                 KfPopMenuItem(
