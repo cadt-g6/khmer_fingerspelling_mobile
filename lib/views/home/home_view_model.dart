@@ -14,7 +14,6 @@ import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predicted_
 
 class HomeViewModel extends BaseViewModel {
   late final ValueNotifier<bool> showImageSelector;
-  late final ValueNotifier<bool> drawerOpenedNotifier;
   late final ValueNotifier<int?> selectedPredictionIndexNotifier;
 
   List<PredictedPosition> get predictedPositions => _predictedPositions;
@@ -34,7 +33,6 @@ class HomeViewModel extends BaseViewModel {
 
   HomeViewModel() {
     showImageSelector = ValueNotifier(false);
-    drawerOpenedNotifier = ValueNotifier(false);
     selectedPredictionIndexNotifier = ValueNotifier(null);
     TfliteModels.handTrackingModel.load();
   }
@@ -42,7 +40,6 @@ class HomeViewModel extends BaseViewModel {
   @override
   void dispose() {
     showImageSelector.dispose();
-    drawerOpenedNotifier.dispose();
     selectedPredictionIndexNotifier.dispose();
     TfliteModels.handTrackingModel.close();
     super.dispose();

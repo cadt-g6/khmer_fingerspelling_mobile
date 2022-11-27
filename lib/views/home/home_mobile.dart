@@ -19,7 +19,6 @@ class HomeMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      onDrawerChanged: (isOpened) => viewModel.drawerOpenedNotifier.value = isOpened,
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: buildAppBar(context),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
+import 'package:khmer_fingerspelling_flutter/core/theme/color_scheme_extension.dart';
 
 class ThemeConfig {
   ThemeConfig._();
@@ -45,6 +47,17 @@ class ThemeConfig {
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(width: 2, color: themeData.colorScheme.primary),
         ),
+      ),
+      dialogTheme: DialogTheme(
+        shape: RoundedRectangleBorder(
+          borderRadius: ConfigConstant.circlarRadius2,
+        ),
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: themeData.colorScheme.readOnly.surface2,
+        centerTitle: false,
+        elevation: 0.0,
+        foregroundColor: themeData.colorScheme.onSurface,
       ),
       textTheme: themeData.textTheme.apply(
         fontFamily: 'KantumruyPro',

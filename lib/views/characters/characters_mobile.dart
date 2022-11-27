@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/models/character_model.dart';
 import 'package:khmer_fingerspelling_flutter/views/characters/characters_view_model.dart';
+import 'package:khmer_fingerspelling_flutter/widgets/kf_pop_button.dart';
+import 'package:khmer_fingerspelling_flutter/widgets/kf_tab_view.dart';
 
 class CharactersMobile extends StatelessWidget {
   const CharactersMobile({
@@ -17,10 +19,11 @@ class CharactersMobile extends StatelessWidget {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
+          leading: const KfPopButton(),
           title: const Text("Characters"),
           bottom: buildTabBar(context),
         ),
-        body: TabBarView(
+        body: KfTabView(
           children: [
             buildGridView(context, viewModel.consonants),
             buildGridView(context, viewModel.stackConsonants),
@@ -48,7 +51,7 @@ class CharactersMobile extends StatelessWidget {
 
   Widget buildGridView(BuildContext context, List<CharacterModel>? characters) {
     return GridView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16.0),
       itemCount: characters?.length ?? 0,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: MediaQuery.of(context).size.width ~/ 120,

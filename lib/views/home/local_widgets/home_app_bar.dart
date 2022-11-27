@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/providers/theme_provider.dart';
 import 'package:khmer_fingerspelling_flutter/views/characters/characters_view.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
@@ -25,17 +24,7 @@ class HomeAppBar extends StatelessWidget {
       elevation: 0.0,
       leading: Center(
         child: IconButton(
-          icon: ValueListenableBuilder<bool>(
-            valueListenable: viewModel.drawerOpenedNotifier,
-            builder: (context, opened, child) {
-              return KfAnimatedIcons(
-                showFirst: opened,
-                duration: ConfigConstant.duration,
-                secondChild: const Icon(Icons.menu),
-                firstChild: const Icon(Icons.clear),
-              );
-            },
-          ),
+          icon: const Icon(Icons.menu),
           onPressed: () {
             if (Scaffold.of(context).isDrawerOpen) {
               Scaffold.of(context).closeDrawer();
@@ -56,7 +45,12 @@ class HomeAppBar extends StatelessWidget {
         // ),
         Center(
           child: IconButton(
-            icon: Icon(Theme.of(context).brightness == Brightness.dark ? Icons.dark_mode : Icons.light_mode),
+            icon: KfAnimatedIcons(
+              duration: const Duration(milliseconds: 500),
+              showFirst: Theme.of(context).brightness == Brightness.dark,
+              firstChild: const Icon(Icons.dark_mode),
+              secondChild: const Icon(Icons.light_mode),
+            ),
             onPressed: () {
               context.read<ThemeProvider>().toggleThemeMode();
             },
