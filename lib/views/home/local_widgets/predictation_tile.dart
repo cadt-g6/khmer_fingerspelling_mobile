@@ -16,7 +16,7 @@ class PredictationTile extends StatelessWidget {
     Color foregroundColor = Theme.of(context).colorScheme.onPrimary;
 
     return ValueListenableBuilder<int?>(
-      valueListenable: viewModel.selectedPredictionIndexNotifier,
+      valueListenable: viewModel.predictionIndexNotifier,
       builder: (context, selectedIndex, child) {
         return buildFadeInWrapper(
           selectedIndex: selectedIndex,
@@ -31,7 +31,7 @@ class PredictationTile extends StatelessWidget {
               onTap: () {
                 viewModel.showPredictInfo(
                   context,
-                  viewModel.predictedPositions[viewModel.selectedPredictionIndexNotifier.value!],
+                  viewModel.predictedPositions[viewModel.predictionIndexNotifier.value!],
                 );
               },
             ),

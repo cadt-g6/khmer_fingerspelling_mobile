@@ -1,40 +1,42 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
-import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_fade_in.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_scale_in.dart';
 
 class DetectorRect extends StatelessWidget {
   const DetectorRect({
     Key? key,
-    required this.viewModel,
-    required this.context,
-    required this.index,
-    required this.position,
-    required this.constraints,
+    required this.rectPosition,
+    required this.parentSize,
+    required this.parentImageAspectRatio,
+    required this.predictionIndexNotifier,
+    required this.isSelected,
+    required this.onTap,
   }) : super(key: key);
 
-  final HomeViewModel viewModel;
-  final BuildContext context;
-  final int index;
-  final PredictedPosition position;
-  final BoxConstraints constraints;
+  final PredictedPosition rectPosition;
+  final Size parentImageAspectRatio;
+  final Size parentSize;
+  final ValueNotifier<int?> predictionIndexNotifier;
+  final bool Function() isSelected;
+  final void Function(bool selected) onTap;
 
   @override
   Widget build(BuildContext context) {
-    double imageSize = constraints.maxWidth;
+    double imageSize = max(parentSize.width, parentSize.height);
 
-    double x = position.x;
-    double y = position.y;
-    double w = position.w;
-    double h = position.h;
+    double x = rectPosition.x;
+    double y = rectPosition.y;
+    double w = rectPosition.w;
+    double h = rectPosition.h;
 
-    x = x * imageSize / viewModel.currentImageAspectRatio!.height;
-    w = w * imageSize / viewModel.currentImageAspectRatio!.height;
+    x = x * imageSize / parentImageAspectRatio.height;
+    w = w * imageSize / parentImageAspectRatio.height;
 
-    y = y * imageSize / viewModel.currentImageAspectRatio!.width;
-    h = h * imageSize / viewModel.currentImageAspectRatio!.width;
+    y = y * imageSize / parentImageAspectRatio.width;
+    h = h * imageSize / parentImageAspectRatio.width;
 
     double add = 12;
     if (add > 0) {
@@ -57,17 +59,17 @@ class DetectorRect extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         clipBehavior: Clip.hardEdge,
         child: ValueListenableBuilder<int?>(
-          valueListenable: viewModel.selectedPredictionIndexNotifier,
+          valueListenable: predictionIndexNotifier,
           builder: (context, selectedIndex, child) {
-            if (index == selectedIndex) {
+            if (isSelected()) {
               return _DetectorRectSelected(
-                onTap: () => viewModel.selectedPredictionIndexNotifier.value = null,
+                onTap: () => onTap(isSelected()),
               );
             } else {
               return _DetectorRectDot(
                 w: w,
                 h: h,
-                onTap: () => viewModel.selectedPredictionIndexNotifier.value = index,
+                onTap: () => onTap(isSelected()),
               );
             }
           },

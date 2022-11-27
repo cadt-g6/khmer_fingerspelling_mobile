@@ -15,6 +15,7 @@ class HomeMobile extends StatelessWidget {
   });
 
   final HomeViewModel viewModel;
+  bool get hasImage => viewModel.currentImage != null;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,8 @@ class HomeMobile extends StatelessWidget {
       drawer: const Drawer(),
       body: Stack(
         children: [
-          EmptyWidget(onPressed: () => viewModel.showImageSelector.value = !viewModel.showImageSelector.value),
-          if (viewModel.currentImage != null) buildBody(viewModel.currentImage!),
+          buildEmpty(),
+          if (hasImage) buildBody(viewModel.currentImage!),
           buildImageSelector(),
           PredictationTile(viewModel: viewModel),
         ],
@@ -34,30 +35,66 @@ class HomeMobile extends StatelessWidget {
     );
   }
 
+  Widget buildEmpty() {
+    return EmptyWidget(onPressed: () {
+      viewModel.showImageSelector.value = !viewModel.showImageSelector.value;
+    });
+  }
+
   Widget buildBody(File image) {
     List<PredictedPosition> positions = [...viewModel.predictedPositions];
     positions.sort((a, b) => b.w * b.h > a.w * a.h ? 1 : -1);
 
-    return Center(
-      child: LayoutBuilder(builder: (context, constraints) {
-        return Stack(
-          children: [
-            Image.file(
-              image,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.fitWidth,
-            ),
-            for (int index = 0; index < positions.length; index++)
-              DetectorRect(
-                viewModel: viewModel,
-                context: context,
-                index: viewModel.predictedPositions.indexOf(positions[index]),
-                position: positions[index],
-                constraints: constraints,
-              )
-          ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        Size? relativeImageSize = viewModel.findRelativeImageWidthHeight(
+          constraints,
+          viewModel.currentImageSize!,
         );
-      }),
+        return Center(
+          child: SizedBox(
+            width: relativeImageSize.width,
+            height: relativeImageSize.height,
+            child: Stack(
+              children: [
+                Image.file(
+                  image,
+                  width: relativeImageSize.width,
+                  height: relativeImageSize.height,
+                  alignment: Alignment.center,
+                ),
+                for (int index = 0; index < positions.length; index++)
+                  buildDetectorRect(relativeImageSize, positions, index)
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildDetectorRect(
+    Size? relativeImageSize,
+    List<PredictedPosition> positions,
+    int index,
+  ) {
+    return DetectorRect(
+      parentImageAspectRatio: viewModel.currentImageAspectRatio!,
+      parentSize: relativeImageSize!,
+      rectPosition: positions[index],
+      predictionIndexNotifier: viewModel.predictionIndexNotifier,
+      isSelected: () {
+        int predictionIndex = viewModel.predictedPositions.indexOf(positions[index]);
+        return predictionIndex == viewModel.predictionIndexNotifier.value;
+      },
+      onTap: (selected) {
+        if (selected) {
+          viewModel.predictionIndexNotifier.value = null;
+        } else {
+          int predictionIndex = viewModel.predictedPositions.indexOf(positions[index]);
+          viewModel.predictionIndexNotifier.value = predictionIndex;
+        }
+      },
     );
   }
 

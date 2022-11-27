@@ -14,7 +14,7 @@ import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predicted_
 
 class HomeViewModel extends BaseViewModel {
   late final ValueNotifier<bool> showImageSelector;
-  late final ValueNotifier<int?> selectedPredictionIndexNotifier;
+  late final ValueNotifier<int?> predictionIndexNotifier;
 
   List<PredictedPosition> get predictedPositions => _predictedPositions;
   Size? get currentImageSize => _currentImageSize;
@@ -33,14 +33,14 @@ class HomeViewModel extends BaseViewModel {
 
   HomeViewModel() {
     showImageSelector = ValueNotifier(false);
-    selectedPredictionIndexNotifier = ValueNotifier(null);
+    predictionIndexNotifier = ValueNotifier(null);
     TfliteModels.handTrackingModel.load();
   }
 
   @override
   void dispose() {
     showImageSelector.dispose();
-    selectedPredictionIndexNotifier.dispose();
+    predictionIndexNotifier.dispose();
     TfliteModels.handTrackingModel.close();
     super.dispose();
   }
@@ -50,7 +50,7 @@ class HomeViewModel extends BaseViewModel {
     _currentImage = image;
     _currentImageSize = imageSize;
     _predictedPositions = [];
-    selectedPredictionIndexNotifier.value = null;
+    predictionIndexNotifier.value = null;
     notifyListeners();
   }
 
@@ -62,7 +62,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
 
     Future.delayed(ConfigConstant.duration).then((value) {
-      selectedPredictionIndexNotifier.value = result?.isNotEmpty == true ? 0 : null;
+      predictionIndexNotifier.value = result?.isNotEmpty == true ? 0 : null;
     });
   }
 
@@ -106,5 +106,22 @@ class HomeViewModel extends BaseViewModel {
     }
 
     croppedFile.delete();
+  }
+
+  Size findRelativeImageWidthHeight(BoxConstraints constraints, Size imageSize) {
+    double width = constraints.maxWidth;
+    double height = constraints.maxHeight;
+
+    if (constraints.maxHeight > constraints.maxWidth) {
+      // w:1000 - w:500
+      // h:300  - h:x
+      height = constraints.maxWidth * imageSize.height / imageSize.width;
+    } else {
+      // w:1000 - w:x
+      // h:300  - h:100
+      width = imageSize.width * constraints.maxHeight / imageSize.height;
+    }
+
+    return Size(width, height);
   }
 }
