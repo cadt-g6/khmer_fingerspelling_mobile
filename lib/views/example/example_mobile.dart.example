@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/views/example/example_view_model.dart.example';
+
+class ExampleMobile extends StatelessWidget {
+  const ExampleMobile({
+    super.key,
+    required this.viewModel,
+  });
+
+  final ExampleViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
+  }
+}

@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/core/base/view_model_provider.dart';
+import 'package:khmer_fingerspelling_flutter/views/example/example_mobile.dart.example';
+import 'package:khmer_fingerspelling_flutter/views/example/example_view_model.dart.example';
+
+class ExampleView extends StatelessWidget {
+  const ExampleView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelProvider<ExampleViewModel>(
+      create: (context) => ExampleViewModel(),
+      builder: (context, viewModel, child) {
+        return ExampleMobile(viewModel: viewModel);
+      },
+    );
+  }
+}
