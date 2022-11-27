@@ -1,0 +1,57 @@
+{
+  "type": "independent_vowels",
+  "data": [
+    {
+      "khmer": "ឥ",
+      "latin": "e"
+    },
+    {
+      "khmer": "ឦ",
+      "latin": "ei"
+    },
+    {
+      "khmer": "ឧ",
+      "latin": "o"
+    },
+    {
+      "khmer": "ឩ",
+      "latin": "ou"
+    },
+    {
+      "khmer": "ឪ",
+      "latin": "au_treisapt"
+    },
+    {
+      "khmer": "ឫ",
+      "latin": "rue"
+    },
+    {
+      "khmer": "ឬ",
+      "latin": "rueu"
+    },
+    {
+      "khmer": "ឭ",
+      "latin": "lue"
+    },
+    {
+      "khmer": "ឮ",
+      "latin": "lueu"
+    },
+    {
+      "khmer": "ឯ",
+      "latin": "ae"
+    },
+    {
+      "khmer": "ឰ",
+      "latin": "ai"
+    },
+    {
+      "khmer": "ឱ",
+      "latin": "ao"
+    },
+    {
+      "khmer": "ឪ",
+      "latin": "au"
+    }
+  ]
+}

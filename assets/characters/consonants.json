@@ -1,0 +1,137 @@
+{
+  "type": "consonants",
+  "data": [
+    {
+      "khmer": "ក",
+      "latin": "ka"
+    },
+    {
+      "khmer": "ខ",
+      "latin": "kha"
+    },
+    {
+      "khmer": "គ",
+      "latin": "ko"
+    },
+    {
+      "khmer": "ឃ",
+      "latin": "kho"
+    },
+    {
+      "khmer": "ង",
+      "latin": "ngo"
+    },
+    {
+      "khmer": "ច",
+      "latin": "cha"
+    },
+    {
+      "khmer": "ឆ",
+      "latin": "chha"
+    },
+    {
+      "khmer": "ជ",
+      "latin": "cho"
+    },
+    {
+      "khmer": "ឈ",
+      "latin": "chho"
+    },
+    {
+      "khmer": "ញ",
+      "latin": "nho"
+    },
+    {
+      "khmer": "ដ",
+      "latin": "da"
+    },
+    {
+      "khmer": "ឋ",
+      "latin": "tha1"
+    },
+    {
+      "khmer": "ឌ",
+      "latin": "do"
+    },
+    {
+      "khmer": "ឍ",
+      "latin": "tho1"
+    },
+    {
+      "khmer": "ណ",
+      "latin": "na"
+    },
+    {
+      "khmer": "ត",
+      "latin": "ta"
+    },
+    {
+      "khmer": "ថ",
+      "latin": "tha2"
+    },
+    {
+      "khmer": "ទ",
+      "latin": "to"
+    },
+    {
+      "khmer": "ធ",
+      "latin": "tho2"
+    },
+    {
+      "khmer": "ន",
+      "latin": "no"
+    },
+    {
+      "khmer": "ប",
+      "latin": "ba"
+    },
+    {
+      "khmer": "ផ",
+      "latin": "pha"
+    },
+    {
+      "khmer": "ព",
+      "latin": "po"
+    },
+    {
+      "khmer": "ភ",
+      "latin": "pho"
+    },
+    {
+      "khmer": "ម",
+      "latin": "mo"
+    },
+    {
+      "khmer": "យ",
+      "latin": "yo"
+    },
+    {
+      "khmer": "រ",
+      "latin": "ro"
+    },
+    {
+      "khmer": "ល",
+      "latin": "lo"
+    },
+    {
+      "khmer": "វ",
+      "latin": "vo"
+    },
+    {
+      "khmer": "ស",
+      "latin": "sa"
+    },
+    {
+      "khmer": "ហ",
+      "latin": "ha"
+    },
+    {
+      "khmer": "ឡ",
+      "latin": "la"
+    },
+    {
+      "khmer": "អ",
+      "latin": "or"
+    }
+  ]
+}

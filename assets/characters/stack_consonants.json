@@ -1,0 +1,133 @@
+{
+  "type": "stack_consonants",
+  "data": [
+    {
+      "khmer": "្ក",
+      "latin": "stack_ka"
+    },
+    {
+      "khmer": "្ខ",
+      "latin": "stack_kha"
+    },
+    {
+      "khmer": "្គ",
+      "latin": "stack_ko"
+    },
+    {
+      "khmer": "្ឃ",
+      "latin": "stack_kho"
+    },
+    {
+      "khmer": "្ង",
+      "latin": "stack_ngo"
+    },
+    {
+      "khmer": "្ច",
+      "latin": "stack_cha"
+    },
+    {
+      "khmer": "្ឆ",
+      "latin": "stack_chha"
+    },
+    {
+      "khmer": "្ជ",
+      "latin": "stack_cho"
+    },
+    {
+      "khmer": "្ឈ",
+      "latin": "stack_chho"
+    },
+    {
+      "khmer": "្ញ",
+      "latin": "stack_nho"
+    },
+    {
+      "khmer": "្ដ",
+      "latin": "stack_da"
+    },
+    {
+      "khmer": "្ឋ",
+      "latin": "stack_tha"
+    },
+    {
+      "khmer": "្ឌ",
+      "latin": "stack_do"
+    },
+    {
+      "khmer": "្ឍ",
+      "latin": "stack_tho"
+    },
+    {
+      "khmer": "្ណ",
+      "latin": "stack_na"
+    },
+    {
+      "khmer": "្ត",
+      "latin": "stack_ta"
+    },
+    {
+      "khmer": "្ថ",
+      "latin": "stack_tha"
+    },
+    {
+      "khmer": "្ទ",
+      "latin": "stack_to"
+    },
+    {
+      "khmer": "្ធ",
+      "latin": "stack_tho"
+    },
+    {
+      "khmer": "្ន",
+      "latin": "stack_no"
+    },
+    {
+      "khmer": "្ប",
+      "latin": "stack_ba"
+    },
+    {
+      "khmer": "្ផ",
+      "latin": "stack_pha"
+    },
+    {
+      "khmer": "្ព",
+      "latin": "stack_po"
+    },
+    {
+      "khmer": "្ភ",
+      "latin": "stack_pho"
+    },
+    {
+      "khmer": "្ម",
+      "latin": "stack_mo"
+    },
+    {
+      "khmer": "្យ",
+      "latin": "stack_yo"
+    },
+    {
+      "khmer": "្រ",
+      "latin": "stack_ro"
+    },
+    {
+      "khmer": "្ល",
+      "latin": "stack_lo"
+    },
+    {
+      "khmer": "្វ",
+      "latin": "stack_vo"
+    },
+    {
+      "khmer": "្ស",
+      "latin": "stack_sa"
+    },
+    {
+      "khmer": "្ហ",
+      "latin": "stack_ha"
+    },
+    {
+      "khmer": "្អ",
+      "latin": "stack_or"
+    }
+  ]
+}

@@ -40,6 +40,12 @@ class ThemeConfig {
   ThemeData withConfiguration(ThemeData themeData) {
     return themeData.copyWith(
       splashFactory: isApple(themeData.platform) ? NoSplash.splashFactory : InkSparkle.splashFactory,
+      tabBarTheme: TabBarTheme(
+        labelColor: themeData.colorScheme.onSurface,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(width: 2, color: themeData.colorScheme.primary),
+        ),
+      ),
       textTheme: themeData.textTheme.apply(
         fontFamily: 'KantumruyPro',
       ),
