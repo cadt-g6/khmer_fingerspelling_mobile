@@ -14,13 +14,15 @@ class ImageUtils {
   Future<File?> cropImage(
     File imageFile,
     Size imageSize,
-    PredictedPosition position,
-  ) async {
+    PredictedPosition position, {
+    double extendSize = 0.0,
+  }) async {
     String filename = DateTime.now().toIso8601String();
     List<int>? cropBytes = await compute(_getCropBytes, {
       'imageFile': imageFile,
       'imageSize': imageSize,
       'position': position,
+      'extendSize': extendSize,
     });
 
     if (cropBytes == null) {
@@ -42,6 +44,7 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
   File imageFile = args['imageFile'];
   Size imageSize = args['imageSize'];
   PredictedPosition position = args['position'];
+  double extendSize = args['extendSize'];
 
   List<int> bytes = imageFile.readAsBytesSync();
   img.Image? image = img.decodeImage(bytes);
@@ -54,19 +57,18 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
     h: position.h * imageSize.height,
   );
 
-  double add = 150;
-  if (add > 0) {
+  if (extendSize > 0) {
     // in case excede size,
     // by default, img.copyCrop already handle this but not in sqaue size.
-    double excedeWidth = (cropPosition.w + add) - imageSize.width;
-    double excedeHeight = (cropPosition.h + add) - imageSize.height;
-    add = add - max(0, max(excedeWidth, excedeHeight));
+    double excedeWidth = (cropPosition.w + extendSize) - imageSize.width;
+    double excedeHeight = (cropPosition.h + extendSize) - imageSize.height;
+    extendSize = extendSize - max(0, max(excedeWidth, excedeHeight));
 
     cropPosition = PredictedPosition.withParams(
-      x: cropPosition.x - add / 2,
-      y: cropPosition.y - add / 2,
-      w: cropPosition.w + add,
-      h: cropPosition.h + add,
+      x: cropPosition.x - extendSize / 2,
+      y: cropPosition.y - extendSize / 2,
+      w: cropPosition.w + extendSize,
+      h: cropPosition.h + extendSize,
     );
   }
 

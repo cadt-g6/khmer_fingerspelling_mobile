@@ -1,12 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 import 'package:khmer_fingerspelling_flutter/widgets/kf_fade_in.dart';
-import 'package:khmer_fingerspelling_flutter/widgets/kf_scale_in.dart';
 
-class DetectorRect extends StatelessWidget {
-  const DetectorRect({
+class DetectorDot extends StatelessWidget {
+  const DetectorDot({
     Key? key,
     required this.rectPosition,
     required this.parentSize,
@@ -61,17 +59,12 @@ class DetectorRect extends StatelessWidget {
         child: ValueListenableBuilder<int?>(
           valueListenable: predictionIndexNotifier,
           builder: (context, selectedIndex, child) {
-            if (isSelected()) {
-              return _DetectorRectSelected(
-                onTap: () => onTap(isSelected()),
-              );
-            } else {
-              return _DetectorRectDot(
-                w: w,
-                h: h,
-                onTap: () => onTap(isSelected()),
-              );
-            }
+            if (isSelected()) return const SizedBox.shrink();
+            return _DetectorDot(
+              w: w,
+              h: h,
+              onTap: () => onTap(isSelected()),
+            );
           },
         ),
       ),
@@ -79,44 +72,8 @@ class DetectorRect extends StatelessWidget {
   }
 }
 
-class _DetectorRectSelected extends StatelessWidget {
-  const _DetectorRectSelected({
-    Key? key,
-    required this.onTap,
-  }) : super(key: key);
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return KfFadeIn(
-      child: KfScaleIn(
-        transformAlignment: Alignment.center,
-        duration: ConfigConstant.duration,
-        curve: Curves.ease,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8.0),
-            onTap: onTap,
-            child: CustomPaint(
-              foregroundPainter: BorderPainter(),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  color: Colors.white.withOpacity(0.35),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DetectorRectDot extends StatelessWidget {
-  const _DetectorRectDot({
+class _DetectorDot extends StatelessWidget {
+  const _DetectorDot({
     Key? key,
     required this.w,
     required this.h,
@@ -161,37 +118,4 @@ class _DetectorRectDot extends StatelessWidget {
       ),
     );
   }
-}
-
-class BorderPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    double height = size.height;
-    double width = size.width;
-    double cornerSide = 10.0;
-
-    Paint paint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 3.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    Path path = Path()
-      ..moveTo(cornerSide, 0)
-      ..quadraticBezierTo(0, 0, 0, cornerSide)
-      ..moveTo(0, height - cornerSide)
-      ..quadraticBezierTo(0, height, cornerSide, height)
-      ..moveTo(width - cornerSide, height)
-      ..quadraticBezierTo(width, height, width, height - cornerSide)
-      ..moveTo(width, cornerSide)
-      ..quadraticBezierTo(width, 0, width - cornerSide, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(BorderPainter oldDelegate) => false;
-
-  @override
-  bool shouldRebuildSemantics(BorderPainter oldDelegate) => false;
 }

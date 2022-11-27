@@ -35,6 +35,10 @@ class HomeViewModel extends BaseViewModel {
     showImageSelector = ValueNotifier(false);
     predictionIndexNotifier = ValueNotifier(null);
     TfliteModels.handTrackingModel.load();
+
+    predictionIndexNotifier.addListener(() {
+      updateCurrentPosition(null);
+    });
   }
 
   @override
@@ -66,14 +70,22 @@ class HomeViewModel extends BaseViewModel {
     });
   }
 
-  Future<void> showPredictInfo(BuildContext context, PredictedPosition position) async {
+  PredictedPosition? _currentPosition;
+  void updateCurrentPosition(PredictedPosition? position) {
+    _currentPosition = position;
+  }
+
+  Future<void> showPredictInfo(
+    BuildContext context,
+    PredictedPosition position,
+  ) async {
     bool isApple = ThemeConfig.config.isApple(Theme.of(context).platform);
     File? croppedFile = await MessengerService.instance.showLoading(
       future: () async {
         return ImageUtils().cropImage(
           currentImage!,
           currentImageSize!,
-          position,
+          _currentPosition ?? position,
         );
       },
       context: context,

@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
+import 'package:khmer_fingerspelling_flutter/views/home/detector_rect.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
-import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/detector_rect.dart';
+import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/detector_dot.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/empty_widget.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/home_app_bar.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/image_selector.dart';
@@ -61,10 +62,18 @@ class HomeMobile extends StatelessWidget {
                   image,
                   width: relativeImageSize.width,
                   height: relativeImageSize.height,
-                  alignment: Alignment.center,
+                  fit: relativeImageSize.height > relativeImageSize.width ? BoxFit.fitHeight : BoxFit.fitWidth,
                 ),
                 for (int index = 0; index < positions.length; index++)
-                  buildDetectorRect(relativeImageSize, positions, index)
+                  buildDetectorDot(
+                    relativeImageSize,
+                    positions,
+                    index,
+                  ),
+                buildDetectorRect(
+                  positions,
+                  relativeImageSize,
+                ),
               ],
             ),
           ),
@@ -74,11 +83,33 @@ class HomeMobile extends StatelessWidget {
   }
 
   Widget buildDetectorRect(
+    List<PredictedPosition> positions,
+    Size relativeImageSize,
+  ) {
+    return ValueListenableBuilder<int?>(
+      valueListenable: viewModel.predictionIndexNotifier,
+      builder: (context, index, child) {
+        if (index == null) return const SizedBox.shrink();
+        return DetectorRect(
+          key: ValueKey(index),
+          position: viewModel.predictedPositions[index],
+          relativeImageSize: relativeImageSize,
+          onLongPress: () => viewModel.predictionIndexNotifier.value = null,
+          onPositionUpdate: (position) => viewModel.updateCurrentPosition(position),
+          onTap: (position) {
+            viewModel.showPredictInfo(context, position);
+          },
+        );
+      },
+    );
+  }
+
+  Widget buildDetectorDot(
     Size? relativeImageSize,
     List<PredictedPosition> positions,
     int index,
   ) {
-    return DetectorRect(
+    return DetectorDot(
       parentImageAspectRatio: viewModel.currentImageAspectRatio!,
       parentSize: relativeImageSize!,
       rectPosition: positions[index],
