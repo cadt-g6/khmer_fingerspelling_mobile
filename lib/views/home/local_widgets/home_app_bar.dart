@@ -35,14 +35,14 @@ class HomeAppBar extends StatelessWidget {
         ),
       ),
       actions: [
-        // Center(
-        //   child: IconButton(
-        //     icon: Icon(Icons.folder_shared, color: Theme.of(context).colorScheme.primary),
-        //     onPressed: () {
-        //       viewModel.showImageSelector.value = !viewModel.showImageSelector.value;
-        //     },
-        //   ),
-        // ),
+        Center(
+          child: IconButton(
+            icon: Icon(Icons.folder_shared, color: Theme.of(context).colorScheme.primary),
+            onPressed: () {
+              viewModel.showImageSelector.value = !viewModel.showImageSelector.value;
+            },
+          ),
+        ),
         Center(
           child: IconButton(
             icon: KfAnimatedIcons(
