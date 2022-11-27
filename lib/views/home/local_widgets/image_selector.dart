@@ -29,7 +29,15 @@ class ImageSelector extends StatefulWidget {
   State<ImageSelector> createState() => _ImageSelectorState();
 }
 
+enum ImageDraggableState {
+  dragging,
+  inTarget,
+  inactive,
+}
+
 class _ImageSelectorState extends State<ImageSelector> {
+  late final ValueNotifier<ImageDraggableState> draggingStateNotifier;
+
   Set<String> imagePaths = {};
   Map<String, Size> imageSize = {};
 
@@ -106,6 +114,7 @@ class _ImageSelectorState extends State<ImageSelector> {
   @override
   void initState() {
     super.initState();
+    draggingStateNotifier = ValueNotifier(ImageDraggableState.inactive);
     FileHelper.helper.listAllImages().then((files) {
       if (files.isNotEmpty) {
         context.read<HomeViewModel>().showImageSelector.value = true;
@@ -190,7 +199,7 @@ class _ImageSelectorState extends State<ImageSelector> {
                   duration: ConfigConstant.duration,
                   alignment: Alignment.centerLeft,
                   firstChild: IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(Icons.hide_image),
                     onPressed: () {
                       context.read<HomeViewModel>().setImage(null, null);
                     },
@@ -207,6 +216,29 @@ class _ImageSelectorState extends State<ImageSelector> {
                       context.read<HomeViewModel>().showImageSelector.value = false;
                     },
                   ),
+                ),
+                _DeletionDragTarget(
+                  draggingStateNotifier: draggingStateNotifier,
+                  onDeleteImage: (index) async {
+                    final provider = context.read<HomeViewModel>();
+                    final result = await showOkCancelAlertDialog(
+                      context: context,
+                      title: "Are you sure to delete?",
+                      message: "You can't undo this action.",
+                      isDestructiveAction: true,
+                    );
+
+                    if (result == OkCancelResult.cancel) return;
+                    final filePath = imagePaths.elementAt(index);
+                    setState(() {
+                      imagePaths.remove(filePath);
+                    });
+
+                    File(filePath).delete();
+                    if (provider.currentImage?.path == filePath) {
+                      provider.setImage(null, null);
+                    }
+                  },
                 ),
               ],
             ),
@@ -229,31 +261,37 @@ class _ImageSelectorState extends State<ImageSelector> {
             padding: const EdgeInsets.all(8.0),
             separatorBuilder: (context, index) => const SizedBox(width: 4.0),
             itemBuilder: (context, index) {
-              return AspectRatio(
-                aspectRatio: 1,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor)),
-                        child: buildImage(index),
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            final filePath = imagePaths.elementAt(index);
-                            widget.onImageSelected(
-                              File(filePath),
-                              imageSize[filePath]!,
-                            );
-                          },
+              return Draggable(
+                data: index,
+                onDragStarted: () => draggingStateNotifier.value = ImageDraggableState.dragging,
+                onDragEnd: (_) => draggingStateNotifier.value = ImageDraggableState.inactive,
+                feedback: Opacity(opacity: 0.5, child: buildImage(index)),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor)),
+                          child: buildImage(index),
                         ),
                       ),
-                    )
-                  ],
+                      Positioned.fill(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              final filePath = imagePaths.elementAt(index);
+                              widget.onImageSelected(
+                                File(filePath),
+                                imageSize[filePath]!,
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
@@ -279,5 +317,60 @@ class _ImageSelectorState extends State<ImageSelector> {
           },
         ),
       );
+  }
+}
+
+class _DeletionDragTarget extends StatelessWidget {
+  const _DeletionDragTarget({
+    Key? key,
+    required this.draggingStateNotifier,
+    required this.onDeleteImage,
+  }) : super(key: key);
+
+  final ValueNotifier<ImageDraggableState> draggingStateNotifier;
+  final void Function(int index) onDeleteImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ImageDraggableState>(
+      valueListenable: draggingStateNotifier,
+      builder: (context, state, child) {
+        return KfCrossFade(
+          showFirst: state == ImageDraggableState.inactive,
+          duration: ConfigConstant.duration,
+          alignment: Alignment.centerLeft,
+          firstChild: const SizedBox(height: 48.0),
+          secondChild: DragTarget<int>(
+            onWillAccept: (imageIndex) => true,
+            onLeave: (details) => draggingStateNotifier.value = ImageDraggableState.dragging,
+            onMove: (details) => draggingStateNotifier.value = ImageDraggableState.inTarget,
+            onAccept: (int index) => onDeleteImage(index),
+            builder: (context, candidateData, rejectedData) {
+              return AnimatedContainer(
+                width: 48,
+                height: 48,
+                duration: ConfigConstant.fadeDuration,
+                transform: Matrix4.identity()..scale(state == ImageDraggableState.inTarget ? 1.2 : 1.0),
+                transformAlignment: Alignment.center,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .error
+                      .withOpacity(state == ImageDraggableState.inTarget ? 0.1 : 0.0),
+                ),
+                child: KfCrossFade(
+                  showFirst: state == ImageDraggableState.inTarget,
+                  duration: ConfigConstant.duration,
+                  alignment: Alignment.centerLeft,
+                  firstChild: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                  secondChild: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.error),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }
