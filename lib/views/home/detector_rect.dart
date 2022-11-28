@@ -46,6 +46,8 @@ class _DetectorRectState extends State<DetectorRect> {
   late final double initialRight;
   late final Size initialSize;
 
+  late Size size;
+
   _Conrner? selectingCorner;
 
   @override
@@ -61,7 +63,7 @@ class _DetectorRectState extends State<DetectorRect> {
     initialLeft = left;
     initialRight = right;
 
-    initialSize = Size(
+    initialSize = size = Size(
       widget.relativeImageSize.width - (initialLeft + initialRight),
       widget.relativeImageSize.height - (initialTop + initialBottom),
     );
@@ -97,7 +99,7 @@ class _DetectorRectState extends State<DetectorRect> {
             onTap: () => onTap(),
             onPanEnd: (_) => selectingCorner = null,
             onLongPress: () => widget.onLongPress(),
-            onPanDown: (details) => loadSettlingCorner(details),
+            onPanDown: (details) => loadSelectingCorner(details),
             onPanUpdate: (details) => onPanUpdate(details),
             child: CustomPaint(
               foregroundPainter: _BorderPainter(),
@@ -134,16 +136,16 @@ class _DetectorRectState extends State<DetectorRect> {
     return position;
   }
 
-  void loadSettlingCorner(DragDownDetails details) {
+  void loadSelectingCorner(DragDownDetails details) {
     // topLeft     : Offset(7.5, 6.8)
     // topRight    : Offset(62.0, 9.3)
     // bottomRight : Offset(61.0, 87.8)
     // bottomLeft  : Offset(9.0, 88.3)
 
-    bool t1 = details.localPosition.dx < initialSize.width / 2;
-    bool t2 = details.localPosition.dy < initialSize.height / 2;
-    bool t3 = details.localPosition.dx > initialSize.width / 2;
-    bool t4 = details.localPosition.dy > initialSize.height / 2;
+    bool t1 = details.localPosition.dx < size.width / 2;
+    bool t2 = details.localPosition.dy < size.height / 2;
+    bool t3 = details.localPosition.dx > size.width / 2;
+    bool t4 = details.localPosition.dy > size.height / 2;
 
     bool topLeft = t1 && t2;
     bool topRight = t3 && t2;
@@ -223,6 +225,11 @@ class _DetectorRectState extends State<DetectorRect> {
       left = max(0, left);
       bottom = max(0, bottom);
       right = max(0, right);
+
+      size = Size(
+        widget.relativeImageSize.width - (left + right),
+        widget.relativeImageSize.height - (top + bottom),
+      );
     });
   }
 }
