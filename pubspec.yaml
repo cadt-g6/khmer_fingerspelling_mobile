@@ -46,6 +46,7 @@ flutter:
     - assets/models/
     - assets/images/consonants/
     - assets/characters/
+    - assets/images/vowels/
 
   # https://flutter.dev/assets-and-images/#resolution-aware
   # https://flutter.dev/assets-and-images/#from-packages

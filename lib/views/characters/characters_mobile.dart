@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
 import 'package:khmer_fingerspelling_flutter/models/character_model.dart';
@@ -68,7 +70,14 @@ class CharactersMobile extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              Image.asset("assets/images/consonants/yo.jpg"),
+              FutureBuilder<dynamic>(
+                future: getImage(context, char.latin),
+                builder: (context, snapshot) {
+                  return Image.asset(
+                    snapshot.data ?? "assets/images/consonants/yo.jpg",
+                  );
+                },
+              ),
               Positioned(
                 left: 8,
                 top: 8,
@@ -92,5 +101,14 @@ class CharactersMobile extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<String> getImage(BuildContext context, String char) async {
+    final manifestJson = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+    final images = json
+        .decode(manifestJson)
+        .keys
+        .where((String key) => key.startsWith('assets/images/vowels') && key.split("-").contains("$char.jpg"));
+    return images.elementAt(0);
   }
 }
