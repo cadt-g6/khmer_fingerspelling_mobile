@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/providers/prediction_provider.dart';
 import 'package:khmer_fingerspelling_flutter/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,9 @@ class ProviderScope extends StatelessWidget {
       providers: [
         ListenableProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
+        ),
+        ListenableProvider<PredictionProvider>(
+          create: (context) => PredictionProvider.instance,
         ),
       ],
       child: child,

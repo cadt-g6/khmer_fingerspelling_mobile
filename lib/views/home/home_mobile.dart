@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/providers/prediction_provider.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/detector_rect.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/home_view_model.dart';
@@ -8,6 +9,7 @@ import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/empty_widg
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/home_app_bar.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/image_selector.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predictation_tile.dart';
+import 'package:provider/provider.dart';
 
 class HomeMobile extends StatelessWidget {
   const HomeMobile({
@@ -24,7 +26,22 @@ class HomeMobile extends StatelessWidget {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: buildAppBar(context),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: Consumer<PredictionProvider>(builder: (context, provider, child) {
+          return ListView(
+            children: [
+              ...provider.baseUrls.map((e) {
+                return RadioListTile<String>(
+                  title: Text(e),
+                  groupValue: provider.baseUrl,
+                  onChanged: (String? value) => provider.baseUrl = e,
+                  value: e,
+                );
+              })
+            ],
+          );
+        }),
+      ),
       body: Stack(
         children: [
           buildEmpty(),
@@ -97,7 +114,7 @@ class HomeMobile extends StatelessWidget {
           onLongPress: () => viewModel.predictionIndexNotifier.value = null,
           onPositionUpdate: (position) => viewModel.updateCurrentPosition(position),
           onTap: (position) {
-            viewModel.showPredictInfo(context, position);
+            viewModel.showPredictInfo(context);
           },
         );
       },
@@ -138,7 +155,7 @@ class HomeMobile extends StatelessWidget {
         showImageSelector: viewModel.showImageSelector,
         onImageSelected: (image, imageAspectRatio) {
           viewModel.setImage(image, imageAspectRatio);
-          viewModel.predict();
+          viewModel.detectHands();
         },
       ),
     );

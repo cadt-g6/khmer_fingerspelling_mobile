@@ -3,16 +3,18 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:khmer_fingerspelling_flutter/app.dart';
 import 'package:khmer_fingerspelling_flutter/core/base/base_view_model.dart';
 import 'package:khmer_fingerspelling_flutter/core/constants/config_constant.dart';
-import 'package:khmer_fingerspelling_flutter/core/services/messenger_service.dart';
+import 'package:khmer_fingerspelling_flutter/core/mixins/schedule_mixin.dart';
 import 'package:khmer_fingerspelling_flutter/core/theme/theme_config.dart';
-import 'package:khmer_fingerspelling_flutter/tflite/image_utils.dart';
+import 'package:khmer_fingerspelling_flutter/providers/prediction_provider.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/tflite_models.dart';
 import 'package:khmer_fingerspelling_flutter/views/home/local_widgets/predicted_dialog.dart';
+import 'package:provider/provider.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends BaseViewModel with ScheduleMixin {
   late final ValueNotifier<bool> showImageSelector;
   late final ValueNotifier<int?> predictionIndexNotifier;
 
@@ -37,8 +39,30 @@ class HomeViewModel extends BaseViewModel {
     TfliteModels.handTrackingModel.load();
 
     predictionIndexNotifier.addListener(() {
-      updateCurrentPosition(null);
+      int? index = predictionIndexNotifier.value;
+      if (index != null) {
+        updateCurrentPosition(predictedPositions[index]);
+      } else {
+        updateCurrentPosition(null);
+      }
     });
+  }
+
+  PredictedPosition? _currentPosition;
+  void updateCurrentPosition(PredictedPosition? position) {
+    App.navigatorKey.currentContext!.read<PredictionProvider>().clearPrediction();
+    _currentPosition = position;
+    if (position != null) {
+      predict();
+    } else {}
+  }
+
+  void predict() {
+    scheduleAction(() {
+      App.navigatorKey.currentContext!
+          .read<PredictionProvider>()
+          .predict(image: currentImage!, imageSize: currentImageSize!, cropPosition: _currentPosition!);
+    }, duration: const Duration(milliseconds: 500));
   }
 
   @override
@@ -58,7 +82,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> predict() async {
+  Future<void> detectHands() async {
     if (_currentImage == null) return;
 
     List<PredictedPosition>? result = await TfliteModels.handTrackingModel.filePredict(_currentImage!);
@@ -70,37 +94,18 @@ class HomeViewModel extends BaseViewModel {
     });
   }
 
-  PredictedPosition? _currentPosition;
-  void updateCurrentPosition(PredictedPosition? position) {
-    _currentPosition = position;
-  }
+  Future<void> showPredictInfo(BuildContext context) async {
+    final prediction = context.read<PredictionProvider>().currentPrediction;
+    if (prediction == null) return;
 
-  Future<void> showPredictInfo(
-    BuildContext context,
-    PredictedPosition position,
-  ) async {
     bool isApple = ThemeConfig.config.isApple(Theme.of(context).platform);
-    File? croppedFile = await MessengerService.instance.showLoading(
-      future: () async {
-        return ImageUtils().cropImage(
-          currentImage!,
-          currentImageSize!,
-          _currentPosition ?? position,
-        );
-      },
-      context: context,
-      debugSource: "HomeMobile#buildRect",
-    );
-
-    if (croppedFile == null) return;
     if (isApple) {
       await showCupertinoDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return PredictedDialog(
-            position: position,
-            image: croppedFile,
+            prediction: prediction,
           );
         },
       );
@@ -110,14 +115,11 @@ class HomeViewModel extends BaseViewModel {
         barrierDismissible: true,
         builder: (context) {
           return PredictedDialog(
-            position: position,
-            image: croppedFile,
+            prediction: prediction,
           );
         },
       );
     }
-
-    croppedFile.delete();
   }
 
   Size findRelativeImageWidthHeight(BoxConstraints constraints, Size imageSize) {

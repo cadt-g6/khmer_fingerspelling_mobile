@@ -72,7 +72,9 @@ class _ImageSelectorState extends State<ImageSelector> {
         DialogTextField(
           hintText: "Image url",
           keyboardType: TextInputType.url,
-          initialText: "https://miro.medium.com/max/1400/0*CvYL8OI0js7MWUlM",
+          initialText:
+              "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",
+          // "https://miro.medium.com/max/1400/0*CvYL8OI0js7MWUlM",
           // "https://user-images.githubusercontent.com/29684683/204102649-185c05a5-98f5-457e-9fa1-cc08ad4c3168.png",
           // "https://img.freepik.com/premium-photo/multiracial-hands-coming-together_23-2148734043.jpg?w=2000",
           // "https://user-images.githubusercontent.com/29684683/204097524-812082bf-f526-44ad-baba-e34a512249b9.jpg",

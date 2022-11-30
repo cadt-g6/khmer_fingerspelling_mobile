@@ -9,7 +9,7 @@ class CharactersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<CharactersViewModel>(
-      create: (context) => CharactersViewModel(),
+      create: (context) => CharactersViewModel.instance,
       builder: (context, viewModel, child) {
         return CharactersMobile(viewModel: viewModel);
       },
