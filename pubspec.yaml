@@ -30,6 +30,8 @@ dependencies:
       url: git@github.com:juniorise/flutter_tflite.git
       ref: master
   image: ^3.2.2
+  path: ^1.8.2
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

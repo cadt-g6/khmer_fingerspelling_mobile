@@ -7,9 +7,6 @@ import 'package:khmer_fingerspelling_flutter/core/services/messenger_service.dar
 import 'package:khmer_fingerspelling_flutter/core/utils/file_helper.dart';
 import 'package:khmer_fingerspelling_flutter/tflite/predicted_position.dart';
 
-// ignore: depend_on_referenced_packages
-import 'package:path/path.dart';
-
 class ImageUtils {
   Future<File?> cropImage(
     File imageFile,
@@ -26,7 +23,7 @@ class ImageUtils {
     });
 
     if (cropBytes == null) {
-      MessengerService.instance.showSnackBar("Crop image failed!");
+      MessengerService.instance.showSnackBar("Crop image failed!", success: false);
       return null;
     }
 
@@ -38,6 +35,54 @@ class ImageUtils {
 
     return croppedFile;
   }
+
+  Future<File?> resizeImage(
+    File imageFile,
+    Size imageSize,
+  ) async {
+    List<int>? resizedByes = await compute(_resizeImageBytes, {
+      'imageFile': imageFile,
+      'imageSize': imageSize,
+    });
+
+    if (resizedByes == null) {
+      MessengerService.instance.showSnackBar("Resize image failed!", success: false);
+      return null;
+    }
+
+    File croppedFile = await FileHelper.helper.writeToFile(
+      imageFile.path,
+      resizedByes,
+      FileParentType.other,
+    );
+
+    return croppedFile;
+  }
+}
+
+List<int>? _resizeImageBytes(Map<String, dynamic> args) {
+  File imageFile = args['imageFile'];
+  Size imageSize = args['imageSize'];
+
+  List<int> bytes = imageFile.readAsBytesSync();
+  img.Image? image = img.decodeImage(bytes);
+  if (image == null) return null;
+  Size size;
+
+  if (imageSize.width >= imageSize.height) {
+    size = Size(240, imageSize.height * 240 / imageSize.width);
+  } else {
+    size = Size(imageSize.width * 240 / imageSize.height, 240);
+  }
+
+  final resized = img.copyResize(
+    image,
+    width: size.width.toInt(),
+    height: size.height.toInt(),
+  );
+
+  List<int>? resizedByes = img.encodeJpg(resized);
+  return resizedByes;
 }
 
 List<int>? _getCropBytes(Map<String, dynamic> args) {
@@ -80,7 +125,6 @@ List<int>? _getCropBytes(Map<String, dynamic> args) {
     cropPosition.h.toInt(),
   );
 
-  String filename = basename(imageFile.path);
-  List<int>? cropBytes = img.encodeNamedImage(cropped, filename);
+  List<int>? cropBytes = img.encodeJpg(cropped);
   return cropBytes;
 }

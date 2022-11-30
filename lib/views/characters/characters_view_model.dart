@@ -5,17 +5,23 @@ import 'package:khmer_fingerspelling_flutter/core/base/base_view_model.dart';
 import 'package:khmer_fingerspelling_flutter/models/character_model.dart';
 
 class CharactersViewModel extends BaseViewModel {
+  static final instance = CharactersViewModel._();
+
   List<CharacterModel> consonants = [];
   List<CharacterModel> stackConsonants = [];
   List<CharacterModel> vowels = [];
   List<CharacterModel> subVowels = [];
   List<CharacterModel> independentVowels = [];
 
-  CharactersViewModel() {
-    load();
-  }
+  CharactersViewModel._();
 
   Future<void> load() async {
+    if (consonants.isNotEmpty ||
+        stackConsonants.isNotEmpty ||
+        vowels.isNotEmpty ||
+        subVowels.isNotEmpty ||
+        independentVowels.isNotEmpty) return;
+
     final consonantsStr = await rootBundle.loadString('assets/characters/consonants.json');
     final stackConsonantsStr = await rootBundle.loadString('assets/characters/stack_consonants.json');
     final vowelsStr = await rootBundle.loadString('assets/characters/vowels.json');
